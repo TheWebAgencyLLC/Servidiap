@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import type {TableColumn} from '@nuxt/ui'
+import type {OperativeCost} from "~~/types";
+
+
 const costName = ref('')
 const costAmount = ref('')
 const items = [[{
@@ -11,16 +15,17 @@ const items = [[{
   to: '/supplies'
 }]]
 
-const data = ref([
-  {
-    name: 'test',
-    amount: '7400',
-  },
-  {
-    name: 'testing',
-    amount: '6000',
-  },
-])
+const opcosts = ref([])
+
+
+const {data, refresh} = await useFetch('/api/operative-costs', {
+  method: 'GET',
+  server: false,
+  onResponse({response}) {
+    opcosts.value = response._data.body;
+  }
+})
+
 
 const addCost = () => {
   console.log('Adding cost:', costName.value, costAmount.value)
@@ -37,6 +42,35 @@ const addCost = () => {
     costAmount.value = ''
   }
 }
+
+const columns: TableColumn<OperativeCost>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Nombre'
+  },
+  {
+    accessorKey: 'value',
+    header: 'Monto',
+    cell: ({row}) => `VES.${row.getValue('value')}`
+  }
+]
+
+async function submitData() {
+  try {
+    const res = await $fetch(`/api/operative-costs/create`, {
+      method: 'POST',
+      body: {
+        name: costName.value,
+        value: costAmount.value
+      }
+    })
+    await refresh();
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+
 </script>
 
 <template>
@@ -44,12 +78,12 @@ const addCost = () => {
     <template #header>
       <UDashboardNavbar title="Cost Management" :ui="{ right: 'gap-3' }">
         <template #leading>
-          <UDashboardSidebarCollapse />
+          <UDashboardSidebarCollapse/>
         </template>
 
         <template #right>
           <UDropdownMenu :items="items">
-            <UButton icon="i-lucide-plus" size="md" class="rounded-full" />
+            <UButton icon="i-lucide-plus" size="md" class="rounded-full"/>
           </UDropdownMenu>
         </template>
       </UDashboardNavbar>
@@ -68,24 +102,30 @@ const addCost = () => {
               <div class="space-y-5">
                 <div>
                   <label for="costName" class="block mb-2 text-base">
-                    Nombre
+                    Descripcion:
                   </label>
-                  <UInput v-model="costName" id="costName" class="px-4 py-3 rounded-md focus:outline-none focus:border-green-500"/>
+                  <UInput v-model="costName" id="costName"
+                          class="px-4 py-3 rounded-md focus:outline-none focus:border-green-500"/>
                 </div>
                 <!-- Amount -->
                 <div>
                   <label for="costAmount" class="block mb-2 text-base">
-                    Monto
+                    Monto:
                   </label>
-                  <UInput v-model="costAmount" id="costAmount" class="px-4 py-3 rounded-md focus:outline-none focus:border-green-500"/>
+                  <UInput  v-model.number="costAmount" id="costAmount"
+                           class="px-4 py-3 rounded-md focus:outline-none focus:border-green-500">
+                    <template #leading>
+                     <span class="text-xs px-4">VES.</span>
+                    </template>
+                  </UInput>
                 </div>
-                
+
                 <!-- Submit button -->
                 <div class="pt-3">
-                  <UButton 
-                    @click="addCost()" 
-                    label="Agregar Costos" 
-                    color="success" 
+                  <UButton
+                    @click="submitData"
+                    label="Agregar Costos"
+                    color="success"
                     block
                     :disabled="!costName || !costAmount"
                   />
@@ -93,20 +133,17 @@ const addCost = () => {
               </div>
             </div>
           </div>
-          
+
           <!-- Right column: Honoraries table -->
           <div>
             <div class="px-6 py-5 border-b border-gray-800">
               <h2 class="text-xl font-medium">Listado de Costos Operativos</h2>
             </div>
-            
+
             <div class="p-4">
-              <UTable 
-                :data="data" 
-                :columns="[
-                  { accessorKey: 'name', header: 'Nombre' },
-                  { accessorKey: 'amount', header: 'Monto' }
-                ]"
+              <UTable
+                :data="opcosts"
+                :columns="columns"
                 :ui="{
                   thead: '',
                   tbody: 'divide-y divide-gray-700',

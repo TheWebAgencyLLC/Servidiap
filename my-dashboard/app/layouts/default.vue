@@ -5,21 +5,21 @@ const toast = useToast()
 const open = ref(false)
 
 const links = [[{
-  label: 'Dashboard',
+  label: 'Panel Principal',
   icon: 'i-lucide-layout-dashboard',
   to: '/dashboard',
   onSelect: () => {
     open.value = false
   }
 }, {
-  label: 'Create Quote',
+  label: 'Crear Cotizacion',
   icon: 'i-lucide-notepad-text',
   to: '/quote',
   onSelect: () => {
     open.value = false
   }
 }, {
-  label: 'Create Cost',
+  label: 'Crear Costo Administrativo',
   icon: 'i-lucide-hand-coins',
   to: '/cost',
   onSelect: () => {
@@ -27,7 +27,7 @@ const links = [[{
   }
 },
 {
-  label: 'Add Supplies',
+  label: 'Añadir Insumos',
   icon: 'i-lucide-briefcase-medical',
   to: '/supplies',
   onSelect: () => {
@@ -35,7 +35,7 @@ const links = [[{
   }
 },
 {
-  label: 'Add Study',
+  label: 'Añadir Estudios',
   icon: 'i-lucide-clipboard-plus',
   to: '/study',
   onSelect: () => {
@@ -43,14 +43,14 @@ const links = [[{
   }
 },
 {
-  label: 'Honorary List',
+  label: 'Honorarios Medicos',
   icon: 'i-lucide-user-plus',
   to: '/honorary',
   onSelect: () => {
     open.value = false
   }
 }, {
-  label: 'Settings',
+  label: 'Configuracion',
   to: '/settings',
   icon: 'i-lucide-settings',
   defaultOpen: true,
