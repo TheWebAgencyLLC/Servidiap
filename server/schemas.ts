@@ -37,7 +37,7 @@ export const MedicalHonorariesDocumentZodSchema = MedicalHonorariesZodSchema.mer
 
 // Study schema
 export const StudyZodSchema = z.object({
-    name: z.string().min(1, { message: "Name is required" }),
+    name: z.string().min(1, {message: "Name is required"}),
     Supplies: z.array(
         z.object({
             supply: z.string(), // ObjectId as string
@@ -51,7 +51,7 @@ export const StudyZodSchema = z.object({
         z.string() // ObjectId as string
     ),
     cost: z.number().min(0),
-    specialty: z.string().min(1, { message: "Specialty is required" }),
+    specialty: z.string().min(1, {message: "Specialty is required"}),
     PVP: z.number().optional(), // Kept from original Zod schema but marked as optional
 });
 
@@ -62,16 +62,34 @@ export const StudyDocumentZodSchema = StudyZodSchema.merge(DocumentExtensionZodS
 // Quote schema
 export const QuoteZodSchema = z.object({
     patient: z.object({
-        name: z.string().min(1, { message: "Patient name is required" }),
-        id: z.string().min(1, { message: "Patient ID is required" }),
+        name: z.string().min(1, {message: "Patient name is required"}),
+        id: z.string().min(1, {message: "Patient ID is required"}),
     }),
-    study: z.string().min(1, { message: "Study reference is required" }), // ObjectId as string
+    study: z.string().min(1, {message: "Study reference is required"}), // ObjectId as string
     date: z.string(),
     profit: z.number(),
-    author: z.string().min(1, { message: "Author is required" }),
+    author: z.string().min(1, {message: "Author is required"}),
     totalCost: z.number(),
     finalPrice: z.number(),
 });
 
 // Quote document schema
 export const QuoteDocumentZodSchema = QuoteZodSchema.merge(DocumentExtensionZodSchema);
+
+//pharmacy receipt schema
+
+export const PharmacyReceiptZodSchema = z.object({
+    date: z.date(),
+    total: z.number(),
+    quote: z.string().optional(),
+    Supplies: z.array(
+        z.object({
+            supply: z.string(), // ObjectId as string
+            count: z.number(),
+            priceAtPurchase: z.number().optional() // if you want to record the price at purchase time
+        })
+    ),
+    receiptNumber: z.string().min(1, {message: "Receipt number is required"}),
+});
+
+export const PharmacyReceiptDocumentZodSchema = PharmacyReceiptZodSchema.merge(DocumentExtensionZodSchema);

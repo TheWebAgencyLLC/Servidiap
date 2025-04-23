@@ -12,9 +12,16 @@ const links = [[{
     open.value = false
   }
 }, {
+  label:  'Cotizaciones',
+  icon: 'i-lucide-notepad-text',
+  to: '/quote-list',
+  onSelect: () => {
+    open.value = false
+  }
+},{
   label: 'Crear Cotizacion',
   icon: 'i-lucide-notepad-text',
-  to: '/quote',
+  to: '/quote/create',
   onSelect: () => {
     open.value = false
   }

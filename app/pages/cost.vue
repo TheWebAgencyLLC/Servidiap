@@ -27,21 +27,6 @@ const {data, refresh} = await useFetch('/api/operative-costs', {
 })
 
 
-const addCost = () => {
-  console.log('Adding cost:', costName.value, costAmount.value)
-  if (costName.value && costAmount.value) {
-    data.value = [
-      ...data.value,
-      {
-        name: costName.value,
-        amount: costAmount.value
-      }
-    ]
-    console.log('Updated data:', data.value)
-    costName.value = ''
-    costAmount.value = ''
-  }
-}
 
 const columns: TableColumn<OperativeCost>[] = [
   {

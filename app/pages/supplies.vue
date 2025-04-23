@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {TableColumn} from "@nuxt/ui";
-import type {Supply} from "~~/types";
+import type {Quote, Supply} from "~~/types";
 import type {Row} from '@tanstack/vue-table'
 import {getPaginationRowModel} from '@tanstack/vue-table'
 
@@ -59,27 +59,27 @@ const columns: TableColumn<Supply>[] = [
     id: 'Acciones',
     cell: ({row}) => {
       return h(
-        'div',
-        {class: 'text-right'},
-        h(
-          UDropdownMenu,
-          {
-            content: {
-              align: 'end'
-            },
-            items: getRowItems(row),
-            'aria-label': 'Actions dropdown'
-          },
-          () =>
-            h(UButton, {
-                label: 'Acciones',
-                variant: 'outline',
-                color: 'primary',
-                class: 'ml-auto',
+          'div',
+          {class: 'text-right'},
+          h(
+              UDropdownMenu,
+              {
+                content: {
+                  align: 'end'
+                },
+                items: getRowItems(row),
                 'aria-label': 'Actions dropdown'
-              }
-            )
-        )
+              },
+              () =>
+                  h(UButton, {
+                        label: 'Acciones',
+                        variant: 'outline',
+                        color: 'primary',
+                        class: 'ml-auto',
+                        'aria-label': 'Actions dropdown'
+                      }
+                  )
+          )
       )
     }
   }
@@ -113,9 +113,6 @@ const filteredResults = computed(() => {
 //Modal stuff
 const open = ref(false)
 
-defineShortcuts({
-  o: () => open.value = !open.value
-})
 
 //Form to submit a new supply.
 
@@ -127,6 +124,7 @@ const formData = ref({
   totalCost: 0,
 })
 
+
 // import type { UTableRef } from '#ui/types'
 const table = useTemplateRef('table')
 const pagination = ref({
@@ -134,10 +132,13 @@ const pagination = ref({
   pageSize: 10
 })
 
+
+
 </script>
 
 <template>
-  <UModal ref="table" v-model:open="open">
+  <UModal v-model:open="open">
+
     <template #content>
       <UCard>
         <template #header>Añadir Insumo</template>
@@ -188,20 +189,20 @@ const pagination = ref({
 
     <template #body>
       <UTable
-              ref="table"
-              v-model:global-filter="filter"
-              v-model:pagination="pagination"
-              :pagination-options="{
+          ref="table"
+          v-model:global-filter="filter"
+          v-model:pagination="pagination"
+          :pagination-options="{
               getPaginationRowModel: getPaginationRowModel()
             }" :data="supplies" :columns="columns">
 
       </UTable>
       <div class="flex justify-center border-t border-(--ui-border) pt-4">
         <UPagination
-          :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
-          :items-per-page="table?.tableApi?.getState().pagination.pageSize"
-          :total="table?.tableApi?.getFilteredRowModel().rows.length"
-          @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)"
+            :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
+            :items-per-page="table?.tableApi?.getState().pagination.pageSize"
+            :total="table?.tableApi?.getFilteredRowModel().rows.length"
+            @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)"
         />
       </div>
 
