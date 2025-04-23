@@ -12,13 +12,13 @@ const links = [[{
     open.value = false
   }
 }, {
-  label:  'Cotizaciones',
+  label: 'Cotizaciones',
   icon: 'i-lucide-notepad-text',
   to: '/quote-list',
   onSelect: () => {
     open.value = false
   }
-},{
+}, {
   label: 'Crear Cotizacion',
   icon: 'i-lucide-notepad-text',
   to: '/quote/create',
@@ -33,61 +33,30 @@ const links = [[{
     open.value = false
   }
 },
-{
-  label: 'Añadir Insumos',
-  icon: 'i-lucide-briefcase-medical',
-  to: '/supplies',
-  onSelect: () => {
-    open.value = false
-  }
-},
-{
-  label: 'Añadir Estudios',
-  icon: 'i-lucide-clipboard-plus',
-  to: '/study',
-  onSelect: () => {
-    open.value = false
-  }
-},
-{
-  label: 'Honorarios Medicos',
-  icon: 'i-lucide-user-plus',
-  to: '/honorary',
-  onSelect: () => {
-    open.value = false
-  }
-}, {
-  label: 'Configuracion',
-  to: '/settings',
-  icon: 'i-lucide-settings',
-  defaultOpen: true,
-  children: [{
-    label: 'General',
-    to: '/settings',
-    exact: true,
+  {
+    label: 'Añadir Insumos',
+    icon: 'i-lucide-briefcase-medical',
+    to: '/supplies',
     onSelect: () => {
       open.value = false
     }
-  }, {
-    label: 'Members',
-    to: '/settings/members',
+  },
+  {
+    label: 'Añadir Estudios',
+    icon: 'i-lucide-clipboard-plus',
+    to: '/study',
     onSelect: () => {
       open.value = false
     }
-  }, {
-    label: 'Notifications',
-    to: '/settings/notifications',
+  },
+  {
+    label: 'Honorarios Medicos',
+    icon: 'i-lucide-user-plus',
+    to: '/honorary',
     onSelect: () => {
       open.value = false
     }
-  }, {
-    label: 'Security',
-    to: '/settings/security',
-    onSelect: () => {
-      open.value = false
-    }
-  }]
-}]]
+  }]]
 
 const groups = computed(() => [{
   id: 'links',
@@ -134,42 +103,42 @@ onMounted(async () => {
 <template>
   <UDashboardGroup unit="rem">
     <UDashboardSidebar
-      id="default"
-      v-model:open="open"
-      collapsible
-      resizable
-      class="bg-(--ui-bg-elevated)/25"
-      :ui="{ footer: 'lg:border-t lg:border-(--ui-border)' }"
+        id="default"
+        v-model:open="open"
+        collapsible
+        resizable
+        class="bg-(--ui-bg-elevated)/25"
+        :ui="{ footer: 'lg:border-t lg:border-(--ui-border)' }"
     >
       <!-- <template #header="{ collapsed }">
         <TeamsMenu :collapsed="collapsed" />
       </template> -->
 
       <template #default="{ collapsed }">
-        <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-(--ui-border)" />
+        <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-(--ui-border)"/>
 
         <UNavigationMenu
-          :collapsed="collapsed"
-          :items="links[0]"
-          orientation="vertical"
+            :collapsed="collapsed"
+            :items="links[0]"
+            orientation="vertical"
         />
 
         <UNavigationMenu
-          :collapsed="collapsed"
-          :items="links[1]"
-          orientation="vertical"
-          class="mt-auto"
+            :collapsed="collapsed"
+            :items="links[1]"
+            orientation="vertical"
+            class="mt-auto"
         />
       </template>
 
       <template #footer="{ collapsed }">
-        <UserMenu :collapsed="collapsed" />
+        <UserMenu :collapsed="collapsed"/>
       </template>
     </UDashboardSidebar>
 
-    <UDashboardSearch :groups="groups" />
+    <UDashboardSearch :groups="groups"/>
 
-    <slot />
+    <slot/>
 
   </UDashboardGroup>
 </template>
