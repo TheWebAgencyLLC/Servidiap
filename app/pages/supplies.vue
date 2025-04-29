@@ -28,10 +28,36 @@ const {data} = await useFetch('/api/supplies', {
   }
 })
 
+// Stock update modal state
+const updateStockModal = ref(false)
+const selectedSupply = ref<Supply | null>(null)
+const newStockValue = ref(0)
 
 function updateStock(row: Row<Supply>) {
+  selectedSupply.value = row.original
+  newStockValue.value = row.original.stock
+  updateStockModal.value = true
+}
 
-  console.log('Update stock for:', row.original)
+async function saveStockUpdate() {
+  if (!selectedSupply.value) return
+
+  // Create a copy of the selected supply and update its stock value
+  const updatedSupply = {
+    ...selectedSupply.value,
+    stock: newStockValue.value,
+    // Also update the total cost based on the new stock value
+    totalCost: newStockValue.value * (selectedSupply.value.costPerUnit || 0)
+  }
+
+  const res = await $fetch(`/api/supplies/update`, {
+    method: 'POST',
+    body: updatedSupply
+  })
+
+  console.log(res)
+  await refreshNuxtData();
+  updateStockModal.value = false
 }
 
 const columns: TableColumn<Supply>[] = [
@@ -164,8 +190,8 @@ const totalMoneyInStock = computed(() => {
 </script>
 
 <template>
+  <!-- Add Supply Modal -->
   <UModal v-model:open="open">
-
     <template #content>
       <UCard>
         <template #header>Añadir Insumo</template>
@@ -195,9 +221,40 @@ const totalMoneyInStock = computed(() => {
           </div>
         </template>
       </UCard>
-
     </template>
   </UModal>
+
+  <!-- Update Stock Modal -->
+  <UModal v-model:open="updateStockModal">
+    <template #content>
+      <UCard>
+        <template #header>Actualizar Existencia</template>
+        <template #default>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-medium text-gray-700">Insumo:</h3>
+              <p class="text-xl font-semibold">{{ selectedSupply?.description }}</p>
+            </div>
+            <UFormField label="Nueva Existencia" class="w-full">
+              <UInput
+                  v-model.number="newStockValue"
+                  type="number"
+                  min="0"
+                  placeholder="Ingrese el nuevo valor de existencia"
+              />
+            </UFormField>
+          </div>
+        </template>
+        <template #footer>
+          <div class="flex justify-end space-x-2">
+            <UButton @click="saveStockUpdate()">Guardar</UButton>
+            <UButton variant="subtle" @click="updateStockModal = false">Cancelar</UButton>
+          </div>
+        </template>
+      </UCard>
+    </template>
+  </UModal>
+
   <UDashboardPanel id="supplies">
     <template #header>
       <UDashboardNavbar title="Añadir Insumos" :ui="{ right: 'gap-3' }">
@@ -235,11 +292,6 @@ const totalMoneyInStock = computed(() => {
             @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)"
         />
       </div>
-
-      <!-- <HomeStats :period="period" :range="range" />
-      <HomeChart :period="period" :range="range" />
-      <HomeSales :period="period" :range="range" /> -->
-
     </template>
   </UDashboardPanel>
 </template>

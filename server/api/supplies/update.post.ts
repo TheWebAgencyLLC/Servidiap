@@ -7,7 +7,7 @@ const schema = z.object({
     stock: z.number().optional(),
     costPerUnit: z.number().optional(),
     totalCost: z.number().optional(),
-    code: z.string().optional(),
+    code: z.number().optional(),
     _id: z.string()
 })
 
