@@ -34,7 +34,7 @@ const links = [[{
   }
 },
   {
-    label: 'Añadir Insumos',
+    label: 'Inventario De Farmacia e Insumos',
     icon: 'i-lucide-briefcase-medical',
     to: '/supplies',
     onSelect: () => {
@@ -74,7 +74,7 @@ const groups = computed(() => [{
   }]
 }])
 
-onMounted(async () => {
+/*onMounted(async () => {
   const cookie = useCookie('cookie-consent')
   if (cookie.value === 'accepted') {
     return
@@ -97,7 +97,7 @@ onMounted(async () => {
       variant: 'ghost'
     }]
   })
-})
+})*/
 </script>
 
 <template>

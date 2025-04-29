@@ -28,6 +28,12 @@ const {data} = await useFetch('/api/supplies', {
   }
 })
 
+
+function updateStock(row: Row<Supply>) {
+
+  console.log('Update stock for:', row.original)
+}
+
 const columns: TableColumn<Supply>[] = [
   {
     header: 'Codigo',
@@ -39,7 +45,22 @@ const columns: TableColumn<Supply>[] = [
   },
   {
     header: 'Existencia',
-    accessorKey: 'stock'
+    accessorKey: 'stock',
+    cell: ({row}) => {
+      return h('div', {class: 'flex items-center gap-2'}, [
+        h('span', {}, row.getValue('stock')),
+        h(
+            UButton,
+            {
+              label: 'Actualizar',
+              variant: 'outline',
+              color: 'primary',
+              size: 'sm',
+              onClick: () => updateStock(row)
+            }
+        )
+      ])
+    }
   },
   {
     header: 'Costo por Unidad',
@@ -132,6 +153,12 @@ const pagination = ref({
   pageSize: 10
 })
 
+// Calculate total money in stock
+const totalMoneyInStock = computed(() => {
+  return supplies.value.reduce((total, supply) => {
+    return total + (supply.totalCost || 0);
+  }, 0);
+});
 
 
 </script>
@@ -176,6 +203,9 @@ const pagination = ref({
       <UDashboardNavbar title="Añadir Insumos" :ui="{ right: 'gap-3' }">
         <template #leading>
           <UDashboardSidebarCollapse/>
+        </template>
+        <template #default>
+          Total en existencia: Bs. {{ totalMoneyInStock.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
         </template>
 
         <template #right>
