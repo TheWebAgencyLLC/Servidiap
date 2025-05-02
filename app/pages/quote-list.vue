@@ -111,7 +111,7 @@ async function generateReceipt(row: any) {
       },
       method: 'POST'
     })
-    console.log(res)
+    return navigateTo(`/pharmacy/${res.body}`)
   } catch (e) {
     console.error(e)
   }
