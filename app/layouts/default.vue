@@ -115,6 +115,7 @@ const groups = computed(() => [{
       </template> -->
 
       <template #default="{ collapsed }">
+        <img src="/logo-servidiap.png" alt="Logo" class="h-12 mx-auto"/>
         <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-(--ui-border)"/>
 
         <UNavigationMenu
