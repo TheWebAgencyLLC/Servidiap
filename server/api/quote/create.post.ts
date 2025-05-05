@@ -2,18 +2,18 @@ import {QuoteZodSchema} from "~~/server/schemas";
 
 
 export default defineEventHandler(async (event) => {
-    try{
+    try {
         const result = await readValidatedBody(event, body => QuoteZodSchema.safeParse(body))
-        if(!result.success){
+        if (!result.success) {
             return {
                 statusCode: 400,
                 body: result.error.issues
             }
         }
-        const {patient, study, profit, author, date, finalPrice, totalCost} = result.data
+        const {patient, study, profit, author, date, finalPrice, totalCost, doctor} = result.data
 
         const targetStudy = await studySchema.findOne({_id: study})
-        if(!study){
+        if (!study) {
             return {
                 statusCode: 400,
                 body: "Study not found"
@@ -27,13 +27,13 @@ export default defineEventHandler(async (event) => {
             date,
             finalPrice,
             totalCost,
+            doctor
         })
 
         return {
             statusCode: 200,
             body: newQuote
         }
-
 
 
     } catch (e: any) {

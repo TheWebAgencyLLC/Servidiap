@@ -75,7 +75,7 @@ async function submitData() {
     </template>
 
     <template #body>
-      <div class="min-h-screen text-white">
+      <div class="min-h-screen">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
           <!-- Left column: Create Cost form -->
           <div class="border-r border-gray-800">

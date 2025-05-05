@@ -71,6 +71,7 @@ export const QuoteZodSchema = z.object({
     author: z.string().min(1, {message: "Author is required"}),
     totalCost: z.number(),
     finalPrice: z.number(),
+    doctor: z.string()
 });
 
 // Quote document schema

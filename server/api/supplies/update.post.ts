@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
             stock?: number | undefined,
             costPerUnit?: number | undefined,
             totalCost?: number | undefined,
-            code?: string | undefined,
+            code?: number | undefined,
             _id: string
         } = result.data
 

@@ -88,7 +88,7 @@ async function submitData() {
     </template>
 
     <template #body>
-      <div class="min-h-screen text-white">
+      <div class="min-h-screen ">
         <!-- 2-column layout -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
           <!-- Left column: Create Honorary form -->

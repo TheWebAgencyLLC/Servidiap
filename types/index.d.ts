@@ -68,4 +68,10 @@ export interface Quote {
   author: string,
   finalPrice: number,
   totalCost: number,
+  doctor: Doctor | stri,
+}
+
+export interface Doctor{
+    name: string,
+    specialties: string[],
 }

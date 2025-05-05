@@ -32,6 +32,6 @@ export const studySchema = defineMongooseModel({
         specialty: {
             type: String,
             required: true,
-        }
+        },
     }
 })

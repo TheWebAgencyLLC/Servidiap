@@ -77,6 +77,12 @@ async function onChange(event: any) {
   }
 }
 
+async function onDoctorChange(event: any) {
+  doctor.value.name = event.name
+  doctor.value._id = event._id
+}
+
+
 // Submit function based on the original submitData function
 async function submitQuote() {
   try {
@@ -88,6 +94,7 @@ async function submitQuote() {
         study: selectedStudy?.value?._id,
         totalCost: parseFloat(calculatedCost.value.toString()),
         finalPrice: parseFloat(totalPrice.value),
+        doctor: doctor.value._id,
       }
     });
 
@@ -96,7 +103,6 @@ async function submitQuote() {
       description: 'Cotizacion creada correctamente.',
     });
     return navigateTo(`/quote/${res.body._id}`)
-
 
 
     // Reset form or navigate as needed
@@ -197,10 +203,41 @@ const totalPrice = computed(() => {
 
 const calculatedPercentage = computed(() => {
   if (selectedStudy.value) {
-    return (calculatedCost.value * state.value.profit).toFixed(2);
+    return (calculatedCost.value * state.value?.profit).toFixed(2);
   }
   return 0;
 });
+
+//LOGIC TO FETCH DOCTORS BASED ON SELECTED STUDY.
+
+const doctor = ref({
+  name: '',
+  _id: ''
+})
+const doctorList = ref()
+
+async function fetchDoctors() {
+  try {
+    const res = await $fetch(`/api/doctors/specialty`, {
+      method: 'GET',
+      query: {
+        specialty: selectedStudy.value?.specialty,
+      }
+    })
+    doctorList.value = res
+    console.log(doctorList.value)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+watch(selectedStudy, async (newStudy) => {
+  if (newStudy) {
+    await fetchDoctors()
+  }
+})
+
+
 </script>
 
 <template>
@@ -241,17 +278,13 @@ const calculatedPercentage = computed(() => {
             <div v-if="currentStep === 1" class="space-y-6">
               <h3 class="text-xl font-semibold mb-4">Información del Paciente</h3>
 
-              <UFormGroup label="Nombre del Paciente" required>
+              <UFormField label="Nombre del Paciente" required>
                 <UInput v-model="state.patient.name" placeholder="Ingrese el nombre completo"/>
-              </UFormGroup>
+              </UFormField>
 
-              <UFormGroup label="Cédula de Identidad" required>
+              <UFormField label="Cédula de Identidad" required>
                 <UInput v-model="state.patient.id" placeholder="V-12345678"/>
-              </UFormGroup>
-
-              <UFormGroup label="Fecha">
-                <UDatePicker v-model="state.date" :ui="{ input: { rounded: 'rounded-lg' } }"/>
-              </UFormGroup>
+              </UFormField>
 
               <div class="flex justify-end pt-4">
                 <UButton
@@ -282,7 +315,16 @@ const calculatedPercentage = computed(() => {
               <!--              </UFormField>-->
               <UFormField label="Estudio">
                 <UInputMenu @update:modelValue="onChange" label-key="name" :items="studyData" v-model="selectedStudy"
-                         placeholder="Seleccione un estudio">
+                            placeholder="Seleccione un estudio">
+                  <template #item="{item}">
+                    {{ item.name }}
+                  </template>
+                </UInputMenu>
+              </UFormField>
+
+              <UFormField v-if="doctorList" label="Médico asignado">
+                <UInputMenu @update:modelValue="onDoctorChange" label-key="name" :items="doctorList" v-model="doctor"
+                            placeholder="Seleccione un Médico">
                   <template #item="{item}">
                     {{ item.name }}
                   </template>
@@ -448,6 +490,9 @@ const calculatedPercentage = computed(() => {
                       <div class="flex justify-between">
                         <span class="text-gray-600">Especialidad:</span>
                         <span class="font-medium">{{ selectedStudy.specialty }}</span>
+                      </div><div class="flex justify-between">
+                        <span class="text-gray-600">Médico Asignado:</span>
+                        <span class="font-medium">{{ doctor.name }}</span>
                       </div>
                     </div>
                   </div>

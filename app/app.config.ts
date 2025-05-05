@@ -4,5 +4,8 @@ export default defineAppConfig({
       primary: 'pink',
       neutral: 'stone'
     }
-  }
+  },
+    toaster:{
+      position: 'top-right'
+    }
 })

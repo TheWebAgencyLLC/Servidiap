@@ -15,7 +15,7 @@
     </template>
 
     <template #body>
-      <div class="min-h-screen text-white">
+      <div class="min-h-screen">
         <!-- Header -->
         <div class="px-8 py-6 border-b border-gray-800">
           <h1 class="text-2xl font-medium">Crear Estudio</h1>
@@ -106,7 +106,7 @@
                 <input
                   type="text"
                   placeholder="Buscar estudios..."
-                  class="px-4 py-2 pr-10 text-white  border border-gray-700 rounded-md focus:outline-none focus:border-green-500"
+                  class="px-4 py-2 pr-10  border border-gray-700 rounded-md focus:outline-none focus:border-green-500"
                 />
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"

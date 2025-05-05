@@ -41,6 +41,17 @@ function onSubmit(payload: FormSubmitEvent<Schema>) {
 function handleContinue() {
   showNavigation.value = true
 }
+
+
+onMounted(() => {
+  navigateTo('/dashboard')
+})
+
+
+
+
+
+
 </script>
 
 <template>

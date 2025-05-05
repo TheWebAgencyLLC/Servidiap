@@ -141,6 +141,9 @@ function goBack() {
                 <div class="flex justify-between">
                   <span class="text-gray-600">Especialidad:</span>
                   <span class="font-medium">{{ quoteData?.study?.specialty }}</span>
+                </div><div class="flex justify-between">
+                  <span class="text-gray-600">Médico Asignado:</span>
+                  <span class="font-medium">{{ quoteData?.doctor?.name }}</span>
                 </div>
               </div>
             </div>

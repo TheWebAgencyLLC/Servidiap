@@ -15,6 +15,7 @@ export const quoteSchema = defineMongooseModel({
                 required: true,
             }
         },
+        //@ts-ignore
         study: {
             type: 'ObjectId',
             ref: 'Study',
@@ -24,20 +25,26 @@ export const quoteSchema = defineMongooseModel({
             type: Date,
             required: true,
         },
-        profit:{
+        profit: {
             type: Number,
             required: true,
         },
         totalCost: {
-          type: Number,
-          required: true,
+            type: Number,
+            required: true,
         },
         finalPrice: {
-          type: Number,
-          required: true,
+            type: Number,
+            required: true,
         },
         author: {
             type: String,
+            required: true,
+        },
+        //@ts-ignore
+        doctor: {
+            type: 'ObjectId',
+            ref: 'Doctor',
             required: true,
         }
 

@@ -8,7 +8,7 @@ export default defineEventHandler(async(event) => {
                 { path: 'operativeCosts', model: 'OperativeCost' },
                 { path: 'medicalHonoraries', model: 'MedicalHonorary' }
             ]
-        })
+        }).populate('doctor')
     } catch (e:any) {
         console.error(e.message)
         return {

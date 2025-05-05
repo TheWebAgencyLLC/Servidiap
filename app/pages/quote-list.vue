@@ -88,7 +88,7 @@ function getRowItems(row: Row<Supply>) {
     },
     {
       label: 'Abrir Cotizacion ',
-      onClick: () => generateReceipt(row)
+      onClick: () => navigateTo(`/quote/${row.original._id}`)
     },
     {
       label: 'Generar Factura de farmacia',
@@ -118,6 +118,8 @@ async function generateReceipt(row: any) {
 
 }
 
+const globalFilter = ref('')
+
 </script>
 
 <template>
@@ -130,6 +132,8 @@ async function generateReceipt(row: any) {
 
         <template #right>
           <!--        <UInput v-model="filter" leading-icon="i-lucide-funnel" placeholder="Buscar Insumo"/>-->
+
+            <UInput leading-icon="i-lucide-funnel" placeholder="Buscar cotizacion" v-model="globalFilter" class="max-w-sm" />
           <UDropdownMenu :items="items">
             <UButton icon="i-lucide-plus" size="md" class="rounded-full"/>
           </UDropdownMenu>
@@ -137,7 +141,7 @@ async function generateReceipt(row: any) {
       </UDashboardNavbar>
     </template>
     <template #body>
-      <UTable :data="quoteData" :columns="columns"/>
+      <UTable v-model:global-filter="globalFilter" :data="quoteData" :columns="columns"/>
     </template>
   </UDashboardPanel>
 </template>
